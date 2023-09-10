@@ -1,5 +1,0 @@
-Music Platform Transfer API
-
-Apple music subscribtion no longer working?
-
-Transfer your playlists to spotify with this 

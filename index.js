@@ -10,6 +10,8 @@ const eRateLimit = require('express-rate-limit')
 
 //others
 const connectDB = require('./db/connect')
+const querystring = require('querystring')
+const cookieparser = require('cookie-parser')
 
 const express = require('express');
 const app = express();
