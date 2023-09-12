@@ -10,6 +10,8 @@ const eRateLimit = require('express-rate-limit')
 
 //others
 const connectDB = require('./db/connect')
+const errorHandler = require('./middleware/error-handler')
+const notFound = require('./middleware/not-found') 
 const querystring = require('querystring')
 const cookieparser = require('cookie-parser')
 
@@ -25,11 +27,14 @@ app.use(helmet())
 app.use(cors())
 app.use(xss())
 
-connectDB()
-
 app.get('/', (req, res)=>{
     res.send('MPT API')
 })
+
+app.use(notFound)
+app.use(errorHandler)
+
+connectDB()
 
 app.listen(port ,()=>{
     console.log(`listening on port ${port}`)

@@ -50,4 +50,4 @@ userSchema.methods.createJWT = function(){
     return jwt.sign({userId:this.id, password:this.password}, process.env.SECRET_KEY,{expiresIn:process.env.SECRET_TIME})
 }
 
-module.exports = mongoose.model('user', userSchema)
+module.exports = mongoose.model('User', userSchema)
