@@ -3,7 +3,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
-
+    s_uid:{
+        type:String,
+        unique:true,
+    },
     name:{
         type: String,
         required: [true, 'Provide a name'],
@@ -28,6 +31,7 @@ const userSchema = new mongoose.Schema({
         ],
         unique:true,
     }
+    
 },{timestamps:true})
 
 userSchema.pre('save', async function (){
