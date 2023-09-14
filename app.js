@@ -14,6 +14,10 @@ const errorHandler = require('./middleware/error-handler')
 const notFound = require('./middleware/not-found') 
 const querystring = require('querystring')
 const cookieparser = require('cookie-parser')
+const auth = require('./middleware/Authentication')
+const auth_R = require('./routes/auth_R')
+const auth_sR = require('./routes/auth_sR')
+
 
 const express = require('express');
 const app = express();
@@ -30,6 +34,10 @@ app.use(xss())
 app.get('/', (req, res)=>{
     res.send('MPT API')
 })
+
+app.use('/api/v1/auth', auth_R)
+app.use('/api/v1/spotify', auth, auth_sR)
+
 
 app.use(notFound)
 app.use(errorHandler)

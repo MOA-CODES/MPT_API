@@ -1,8 +1,11 @@
 const customError = require('../middleware/customError')
 const User = require('../models/user_M') 
+const querystring = require('querystring')
 const {StatusCodes} = require('http-status-codes')
 
 const register = async (req, res) => {    
+    req.body.s_uid = "replace with "+req.body.name+"'s spotify ID"
+
     const user = await User.create({...req.body})
 
     const token = user.createJWT()
@@ -31,7 +34,20 @@ const login = async (req, res) => {
 }
 
 const getAuthorization_spotify = async (req, res) => {
-    
+    const client_id = process.env.CLIENT_ID
+    const redirect_uri = process.env.redirect_uri
+    const state = process.env.SECRET_KEY
+    const scope = 'user-read-private user-read-email'
+
+    res.redirect('https://accounts.spotify.com/authorize?' +
+        querystring.stringify({
+          response_type: 'code',
+          client_id: client_id,
+          scope: scope,
+          redirect_uri: redirect_uri,
+          state:state  
+        })
+    )
 }
 
 const refresh_token_spotify = async (req, res) => {

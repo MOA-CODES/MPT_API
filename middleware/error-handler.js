@@ -16,7 +16,7 @@ const errorHandler = (err, req, res, next) => {
             customError.statusCode = StatusCodes.NOT_FOUND
         }
 
-    return res.status(customError.statusCode).json({Error:{Status: customError.statusCode, Msg: err.msg}})
+    return res.status(customError.statusCode).json({Error:{Status: customError.statusCode, Msg: err.message}})
 }
 
 module.exports = errorHandler
