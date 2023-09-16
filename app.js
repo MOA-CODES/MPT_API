@@ -10,14 +10,20 @@ const eRateLimit = require('express-rate-limit')
 
 //others
 const connectDB = require('./db/connect')
+
 const errorHandler = require('./middleware/error-handler')
 const notFound = require('./middleware/not-found') 
-const querystring = require('querystring')
-const cookieparser = require('cookie-parser')
 const auth = require('./middleware/Authentication')
+
+const main_R = require('./routes/main_R')
 const auth_R = require('./routes/auth_R')
 const auth_sR = require('./routes/auth_sR')
 
+const querystring = require('querystring')
+const cookieparser = require('cookie-parser')
+const bodyparser = require('body-parser')
+const morgan = require('morgan')
+const path = require('path')
 
 const express = require('express');
 const app = express();
@@ -25,15 +31,18 @@ const app = express();
 const port = process.env.PORT||3000
 
 //app
+app.set('view engine', 'ejs')
 
+app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
+app.use(morgan('dev'))
 app.use(helmet())
 app.use(cors())
 app.use(xss())
 
-app.get('/', (req, res)=>{
-    res.send('MPT API')
-})
+app.use('/', main_R)
+
+app.use('/js', express.static(path.resolve(__dirname,"public/js")))
 
 app.use('/api/v1/auth', auth_R)
 app.use('/api/v1/spotify', auth, auth_sR)
