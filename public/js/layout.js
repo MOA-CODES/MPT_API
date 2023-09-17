@@ -1,4 +1,6 @@
+// const {$, jquery} = require('jquery');
 const url= "http://localhost:3000"
+
 
 $("#index-Login").onClick(()=>{
     location.assign(url+"/login")

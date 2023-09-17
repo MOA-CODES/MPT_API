@@ -9,6 +9,7 @@ const xss = require('xss-clean')
 const eRateLimit = require('express-rate-limit')
 
 //others
+// const {$} = require('jquery')
 const connectDB = require('./db/connect')
 
 const errorHandler = require('./middleware/error-handler')
@@ -33,6 +34,16 @@ const port = process.env.PORT||3000
 //app
 app.set('view engine', 'ejs')
 
+app.use(function (req, res, next) {
+    res.setHeader(
+        'Content-Security-Policy-Report-Only',
+
+    //   'Content-Security-Policy',
+      "default-src 'self'; script-src-elem 'none' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdn.jsdelivr.net; frame-src 'self'"
+    );
+    next();
+  });
+
 app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
 app.use(morgan('dev'))
@@ -40,10 +51,9 @@ app.use(helmet())
 app.use(cors())
 app.use(xss())
 
-app.use('/', main_R)
 
 app.use('/js', express.static(path.resolve(__dirname,"public/js")))
-
+app.use('/', main_R)
 app.use('/api/v1/auth', auth_R)
 app.use('/api/v1/spotify', auth, auth_sR)
 
