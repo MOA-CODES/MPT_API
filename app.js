@@ -29,17 +29,17 @@ const path = require('path')
 const express = require('express');
 const app = express();
 
-const port = process.env.PORT||3000
+const port = process.env.PORT||3001
 
 //app
 app.set('view engine', 'ejs')
 
 app.use(function (req, res, next) {
     res.setHeader(
-        'Content-Security-Policy-Report-Only',
+        // 'Content-Security-Policy-Report-Only',
 
-    //   'Content-Security-Policy',
-      "default-src 'self'; script-src-elem 'none' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdn.jsdelivr.net; frame-src 'self'"
+      'Content-Security-Policy',
+      "default-src *; script-src https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js; script-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self'; style-src 'self' https://cdn.jsdelivr.net; frame-src 'self'"
     );
     next();
   });
@@ -47,7 +47,7 @@ app.use(function (req, res, next) {
 app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
 app.use(morgan('dev'))
-app.use(helmet())
+// app.use(helmet())
 app.use(cors())
 app.use(xss())
 
