@@ -33,7 +33,7 @@ const port = process.env.PORT||3001
 
 //app
 app.set('view engine', 'ejs')
-
+app.use(helmet()) //ran helmet first before setting CSP so it doesn't get overwritten
 app.use(function (req, res, next) {
     res.setHeader(
         // 'Content-Security-Policy-Report-Only',
@@ -47,7 +47,6 @@ app.use(function (req, res, next) {
 app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
 app.use(morgan('dev'))
-// app.use(helmet())
 app.use(cors())
 app.use(xss())
 
