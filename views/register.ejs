@@ -1,6 +1,6 @@
 <%- include('include/header')%>
 
-<p>MPT Register page</p>
+<p ><a href="/">MPT</a> Register</p>
 
 <form id="MPTregister">
     <label>Name</label>
@@ -12,6 +12,10 @@
     <label>Password</label>
     <input type="text" name="password" placeholder="Your password" required>
 
+    <button id="RegisterSubmit" type="submit">Register</button>
+
 </form>
+
+<p id="errorMSG"></p>
 
 <%- include('include/footer')%>

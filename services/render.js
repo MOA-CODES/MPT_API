@@ -12,6 +12,6 @@ exports.register = (req, res) =>{
     res.render('register')
 }
 
-exports.register = (req, res) =>{
+exports.home = (req, res) =>{
     res.render('home')
 }

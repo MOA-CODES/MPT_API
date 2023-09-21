@@ -1,15 +1,14 @@
-// const {$, jquery} = require('jquery');
-const url= "http://localhost:3000"
+const url= "http://localhost:3001"
 
 
-$("#index-Login").onClick(()=>{
+$("#index-Login").on('click',(event)=>{
     location.assign(url+"/login")
 })
 
-// (document.getElementById("index-Login")).onClick(()=>{
-//     location.assign(`${url}+"/login`)
-// })
+$("#index-Register").on('click',(event)=>{
+    location.assign(url+"/register")
+})
 
-// (document.getElementById("index-Login")).onClick(()=>{
-//     location.assign("http://localhost:3000/login")
-// })
+$("#MPTregister").on('submit', (event)=>{
+    alert("testing")
+})

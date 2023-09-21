@@ -3,6 +3,6 @@ const router = express.Router();
 
 const services = require('../services/render')
 
-router.get('/home', services.register)
+router.get('/', services.home)
 
 module.exports = router
