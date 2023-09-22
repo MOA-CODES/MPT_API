@@ -68,7 +68,6 @@ const verify_token = async (req, res)=>{ //my user token
     const token = authHeader.split(' ')[1]
 
     try{
-
         const payload = jwt.verify(token, process.env.SECRET_KEY)
 
         res.status(StatusCodes.OK).json({data:{msg:'valid',payload}})

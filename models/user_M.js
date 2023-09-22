@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:[true, 'Provide a valid email address'],
+        required:[true, 'Provide an email address'],
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Provide a valid email address'
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:[true, 'Provide a valid password'],
+        required:[true, 'Provide a password'],
         match:[
             /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/,
             'Password length should be >6 & have at least one lowercase, uppercase & special character'

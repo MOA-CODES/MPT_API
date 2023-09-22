@@ -9,7 +9,6 @@ const xss = require('xss-clean')
 const eRateLimit = require('express-rate-limit')
 
 //others
-// const {$} = require('jquery')
 const connectDB = require('./db/connect')
 
 const errorHandler = require('./middleware/error-handler')
@@ -33,30 +32,37 @@ const port = process.env.PORT||3001
 
 //app
 app.set('view engine', 'ejs')
-app.use(helmet()) //ran helmet first before setting CSP so it doesn't get overwritten
-app.use(function (req, res, next) {
-    res.setHeader(
-        // 'Content-Security-Policy-Report-Only',
+app.use(helmet.contentSecurityPolicy({ //CSP setup with helmet
+  useDefaults: true,
+  directives:{
+    "style-src": ["'self'", "https://cdn.jsdelivr.net"],
+    "script-src":["'self'", "https://cdnjs.cloudflare.com"],
+    "script-src-elem":["'self'", "https://cdnjs.cloudflare.com"]
+  }
+}))
 
-      'Content-Security-Policy',
-      "default-src *; script-src https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js; script-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self'; style-src 'self' https://cdn.jsdelivr.net; frame-src 'self'"
-    );
-    next();
-  });
+/* //we can also do this through the helmet package
+app.use(function (req, res, next) {
+     res.setHeader(
+       'Content-Security-Policy',
+       "default-src *; script-src https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js; script-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self'; img-src 'self'; style-src 'self' https://cdn.jsdelivr.net; frame-src 'self'"
+     );
+     next();
+  }); */
 
 app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
-//app.use(morgan('dev'))
+app.use(morgan('dev'))
 app.use(cors())
 app.use(xss())
 
 
 app.use('/js', express.static(path.resolve(__dirname,"public/js")))
+
 app.use('/', main_R)
+
 app.use('/api/v1/auth', auth_R)
-
 app.use('/api/v1/spotify', auth, auth_sR)
-
 
 app.use(notFound)
 app.use(errorHandler)

@@ -1,18 +1,13 @@
-
 const url= "http://localhost:3001"
 const url2= "http://localhost:3001/api/v1"
-
 const path = window.location.href
-
-console.log(path)
 
 function getCookie(cname) {
     let name = cname + "=";
-    // let decodedCookie = decodeURIComponent(document.cookie);
     let ca = (document.cookie).split(';');
     for(let i = 0; i <ca.length; i++) {
       let c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) == ' ') { //skip empty space if it start with "" ex: " token=blah; "
         c = c.substring(1);
       }
       if (c.indexOf(name) == 0) {
@@ -22,48 +17,22 @@ function getCookie(cname) {
     return "";
 }
 
-// console.log(getCookie('token'))
-// console.log("hello")
+function setCookie(name, value, hourlimit, path){
+    let now = new Date()
+    now.setTime(now.getTime() + hourlimit * 3600 * 1000)//current time + 1hr in milliseconds
 
-$(document).ready(function() {
-    console.log("at document ready")
-
-    if(path === `${url}/home`){
-        console.log("at if")
-
-        const token = getCookie('token');
-
-        const request ={
-            "url" :`${url2}/auth/verify_token`,
-            "method":"POST",
-            "headers":{
-                "Authorization":`Bearer ${token} ` 
-            }
-        }
-
-        $.ajax(request).done(function(response){
-            console.log(response)
-        }).catch((err)=>{
-            console.log(err.responseJSON)
-        })
-    }
-
-})
-
-
+    document.cookie = `${name}=${value};expires=${now.toUTCString()};path=${path}`
+}
 
 $("#MPTregister").on('submit', function(event){
-
     event.preventDefault()
 
-    const unindexed_array = $(this).serializeArray()
+    const values = $(this).serializeArray()
     const data = {}
 
-    $.map(unindexed_array, function(n,i){
+    $.map(values, function(n,i){
         data[n['name']]=n['value']
     })
-
-    console.log(data)
  
     let request = {
             "url" :`${url2}/auth/register`,
@@ -76,7 +45,7 @@ $("#MPTregister").on('submit', function(event){
         document.getElementById("registerMSG").className = "text-success"
         document.getElementById("registerMSG").innerHTML = "successfully registered"
 
-        document.cookie = `token=${response.user.token}; path=http://localhost:3001/`
+        setCookie("token", response.user.token, 1, url)
 
         location.assign(`${url}/home`)
 
@@ -85,6 +54,33 @@ $("#MPTregister").on('submit', function(event){
         document.getElementById("registerMSG").className = "text-danger"
         document.getElementById("registerMSG").innerHTML = err.responseJSON.Error.Msg
     })
+})
 
+$(window).on('load',function() {
+    if(path === `${url}/home`){
+        $("#HomeContent").hide().prop('disabled', true)
+        $("#HomeContent").children().prop('disabled', true)
+
+        const token = getCookie('token');
+        const testtoken = '048AS940zhwT8l1xqLHYck6o2c6EzSrDU1XC88jLxg8HYk9CttQ0pcks6DjovMKU'
+
+        const request ={
+            "url" :`${url2}/auth/verify_token`,
+            "method":"POST",
+            "headers":{
+                "Authorization":`Bearer ${token} ` 
+            }
+        }
+
+        $.ajax(request).done(function(response){
+            $("#loadingHome").hide().prop("disabled",true)
+            $("#HomeContent").show().prop('disabled', false)
+            $("#HomeContent").children().prop('disabled', false)
+            console.log(response)
+        }).catch((err)=>{
+            alert("Invalid Authentication")
+            location.assign(`${url}`)
+        })
+    }
 })
 
