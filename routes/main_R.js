@@ -6,5 +6,7 @@ const services = require('../services/render')
 router.get('/', services.index)
 router.get('/login', services.login)
 router.get('/register', services.register)
+router.get('/home', services.home)
+
 
 module.exports = router

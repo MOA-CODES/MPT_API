@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
 
 app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
-app.use(morgan('dev'))
+//app.use(morgan('dev'))
 app.use(cors())
 app.use(xss())
 
@@ -55,7 +55,6 @@ app.use('/js', express.static(path.resolve(__dirname,"public/js")))
 app.use('/', main_R)
 app.use('/api/v1/auth', auth_R)
 
-app.use('/home', auth, main_R)
 app.use('/api/v1/spotify', auth, auth_sR)
 
 

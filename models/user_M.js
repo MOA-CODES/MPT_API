@@ -3,16 +3,17 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
-    s_uid:{
-        type:String,
-        unique:true,
-    },
+    
     name:{
         type: String,
         required: [true, 'Provide a name'],
         minlength: 3,
         maxlength: 20,
         unique:[true, 'That username is taken']
+    },
+    s_uid:{
+        type:String,
+        unique:true,
     },
     email:{
         type:String,
@@ -28,9 +29,8 @@ const userSchema = new mongoose.Schema({
         required:[true, 'Provide a valid password'],
         match:[
             /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/,
-            'Password must at least one lowercase and uppercase character and one special character'
+            'Password length should be >6 & have at least one lowercase, uppercase & special character'
         ],
-        unique:true,
     }
     
 },{timestamps:true})

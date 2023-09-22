@@ -1,9 +1,14 @@
 const customError = require('../middleware/customError')
 const User = require('../models/user_M') 
+const jwt = require('jsonwebtoken')
 const querystring = require('querystring')
 const {StatusCodes} = require('http-status-codes')
 
 const register = async (req, res) => {    
+    if (!req.body) {
+        throw new customError('Provide name, email and password', StatusCodes.BAD_REQUEST)
+    }
+
     req.body.s_uid = "replace with "+req.body.name+"'s spotify ID"
 
     const user = await User.create({...req.body})
@@ -23,7 +28,7 @@ const login = async (req, res) => {
     if(!user){
         throw new customError('Invalid Credentials', StatusCodes.UNAUTHORIZED)
     }
-
+ 
     const passwordCheck = await user.comparePassword(password)
     if(!passwordCheck){
         throw new customError('Invalid Credentials', StatusCodes.UNAUTHORIZED)
@@ -54,4 +59,23 @@ const refresh_token_spotify = async (req, res) => {
 
 }
 
-module.exports = {register, login, refresh_token_spotify, getAuthorization_spotify}
+const verify_token = async (req, res)=>{ //my user token
+    const authHeader = req.headers.authorization
+    if(!authHeader || !authHeader.startsWith('Bearer ')){
+        throw new customError('Invalid Authentication', StatusCodes.UNAUTHORIZED)
+    }
+
+    const token = authHeader.split(' ')[1]
+
+    try{
+
+        const payload = jwt.verify(token, process.env.SECRET_KEY)
+
+        res.status(StatusCodes.OK).json({data:{msg:'valid',payload}})
+
+    }catch(err){
+        throw new customError('Invalid Authentication', StatusCodes.UNAUTHORIZED)
+    }
+}
+
+module.exports = {register, verify_token, login, refresh_token_spotify, getAuthorization_spotify}

@@ -6,6 +6,11 @@ const errorHandler = (err, req, res, next) => {
         msg: err.message || 'something went wrong try again later'
     }
 
+        if(err.code === 11000){
+            customError.msg = `values already exist, try another set of values `,
+            customError.statusCode = StatusCodes.CONFLICT
+        }
+
         if(err.name === 'ValidationError') {
             customError.statusCode = StatusCodes.BAD_REQUEST
             customError.msg = Object.values(err.errors).map((item)=> item.message).join(', ')
@@ -16,7 +21,8 @@ const errorHandler = (err, req, res, next) => {
             customError.statusCode = StatusCodes.NOT_FOUND
         }
 
-    return res.status(customError.statusCode).json({Error:{Status: customError.statusCode, Msg: err.message}})
+
+    return res.status(customError.statusCode).json({Error:{Status: customError.statusCode, Msg: customError.msg}})
 }
 
 module.exports = errorHandler
