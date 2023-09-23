@@ -56,6 +56,37 @@ $("#MPTregister").on('submit', function(event){
     })
 })
 
+$("#MPTlogin").on('submit', function(event){
+    event.preventDefault()//very necessary
+
+    const values = $(this).serializeArray()
+    const data = {}
+
+    $.map(values, function(n,i){
+        data[n['name']]=n['value']
+    })
+
+    let request = {
+        "url":`${url2}/auth/login`,
+        "method": "POST",
+        "data":data,
+    }
+
+    $.ajax(request).done(function(response){
+        console.log(response)
+        document.getElementById("loginMSG").className = "text-success"
+        document.getElementById("loginMSG").innerHTML = "login successful"
+
+        setCookie("token", response.user.token,1,url)
+
+        location.assign(`${url}/home`)
+    }).catch((err)=>{
+        document.getElementById("loginMSG").className = "text-danger"
+        document.getElementById("loginMSG").innerHTML = err.responseJSON.Error.Msg
+    })
+
+})
+
 $(window).on('load',function() {
     if(path === `${url}/home`){
         $("#HomeContent").hide().prop('disabled', true)
