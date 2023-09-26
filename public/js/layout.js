@@ -115,3 +115,25 @@ $(window).on('load',function() {
     }
 })
 
+$("#getStarted").on("click", function(event){
+    event.preventDefault()
+
+    const token = getCookie('token');
+
+    console.log(token)
+
+    var request = {
+        "url":`${url2}/spotify/login`,
+        "method": "GET",
+        "headers":{
+            "Authorization":`Bearer ${token}`
+        }
+    }
+
+    $.ajax(request).done(function(req, response){
+        console.log(response)
+        console.log(req.query)
+    }).catch((err)=>{
+        alert("An error occured")
+    })
+})

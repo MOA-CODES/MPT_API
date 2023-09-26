@@ -37,7 +37,8 @@ app.use(helmet.contentSecurityPolicy({ //CSP setup with helmet
   directives:{
     "style-src": ["'self'", "https://cdn.jsdelivr.net"],
     "script-src":["'self'", "https://cdnjs.cloudflare.com"],
-    "script-src-elem":["'self'", "https://cdnjs.cloudflare.com"]
+    "script-src-elem":["'self'", "https://cdnjs.cloudflare.com"],
+    "connect-src":["'self'", "https://accounts.spotify.com", "https://api.spotify.com"],
   }
 }))
 
@@ -53,7 +54,15 @@ app.use(function (req, res, next) {
 app.use (bodyparser.urlencoded({extended: true}))
 app.use(express.json())
 app.use(morgan('dev'))
-app.use(cors())
+
+const corsOptions = {
+  origin: '*',
+  methods:'GET, POST, PUT, DELETE, PATCH',
+  headers: 'Content-Type,X-Requested-With',
+
+}
+
+app.use(cors(corsOptions)) //cors is currently blocking our use of spotify's api
 app.use(xss())
 
 
