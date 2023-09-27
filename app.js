@@ -58,7 +58,8 @@ app.use(morgan('dev'))
 const corsOptions = {
   origin: '*',
   methods:'GET, POST, PUT, DELETE, PATCH',
-  headers: 'Content-Type,X-Requested-With',
+  headers: 'Content-Type,X-Requested-With,Authorization',
+  credentials: true,
 
 }
 
