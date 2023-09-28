@@ -41,8 +41,10 @@ const login = async (req, res) => {
 const getAuthorization_spotify = async (req, res) => {
     const client_id = process.env.CLIENT_ID
     const redirect_uri = process.env.redirect_uri
-    const state = process.env.SECRET_KEY
+    const state = createState(10)
     const scope = 'user-read-private user-read-email'
+
+    res.cookie(stateKey, state)
 
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -75,6 +77,17 @@ const verify_token = async (req, res)=>{ //my user token
     }catch(err){
         throw new customError('Invalid Authentication', StatusCodes.UNAUTHORIZED)
     }
+}
+
+function createState(length){
+    let state = ""
+    const values = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_!@#$%^&*()'
+
+    for(let i =0; i < length; i++){
+        state +=values.charAt(Math.floor(Math.random()*values.length))
+    }
+
+    return state
 }
 
 module.exports = {register, verify_token, login, refresh_token_spotify, getAuthorization_spotify}

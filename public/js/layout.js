@@ -89,6 +89,7 @@ $("#MPTlogin").on('submit', function(event){
 
 $(window).on('load',function() {
     if(path === `${url}/home`){
+
         $("#HomeContent").hide().prop('disabled', true)
         $("#HomeContent").children().prop('disabled', true)
 
@@ -107,7 +108,15 @@ $(window).on('load',function() {
             $("#loadingHome").hide().prop("disabled",true)
             $("#HomeContent").show().prop('disabled', false)
             $("#HomeContent").children().prop('disabled', false)
-            console.log(response)
+
+                const code = req.query.code || null;
+                const state = req.query.state || null;
+                const storedState = req.cookies ? req.cookies[stateKey] : null;
+
+                if (state === null || state){
+                    
+                }
+
         }).catch((err)=>{
             alert("Invalid Authentication")
             location.assign(`${url}`)
@@ -138,27 +147,4 @@ $("#getStarted").on("click", function(event){
     })
 })
 
-$("#getStarted2").on("click", function(event){
-    event.preventDefault()
 
-    const token = getCookie('token');
-
-    console.log(token)
-
-    var request = {
-        "url":`${url2}/spotify/login`,
-        "method": "GET",
-        "headers":{
-            "Authorization":`Bearer ${token}`
-        }
-    }
-
-    console.log(request)
-
-    $.ajax(request).done(function(req, response){
-        console.log(response)
-        console.log(req.query)
-    }).catch((err)=>{
-        alert("An error occured")
-    })
-})
