@@ -72,7 +72,8 @@ app.use('/js', express.static(path.resolve(__dirname,"public/js")))
 app.use('/', main_R)
 
 app.use('/api/v1/auth', auth_R)
-app.use('/api/v1/spotify', auth, auth_sR)
+//app.use('/api/v1/spotify', auth, auth_sR)//im thinking of removing the auth because the page already does verification before you can get to the page where you can do this
+app.use('/api/v1/spotify', auth_sR)
 
 app.use(notFound)
 app.use(errorHandler)
