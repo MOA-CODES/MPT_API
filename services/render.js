@@ -15,3 +15,7 @@ exports.register = (req, res) =>{
 exports.home = (req, res) =>{
     res.render('home')
 }
+
+exports.callback = (req, res) =>{
+    res.render('callback')
+}

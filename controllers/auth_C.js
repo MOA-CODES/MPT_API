@@ -43,6 +43,7 @@ const getAuthorization_spotify = async (req, res) => {
     const redirect_uri = process.env.redirect_uri
     const state = createState(10)
     const scope = 'user-read-private user-read-email'
+    const stateKey = 'spotify_auth_state';
 
     res.cookie(stateKey, state)
 

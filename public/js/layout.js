@@ -1,6 +1,11 @@
 const url= "http://localhost:3001"
 const url2= "http://localhost:3001/api/v1"
 const path = window.location.href
+const pathname = window.location.pathname
+const stateKey = 'spotify_auth_state';
+
+console.log(path)
+console.log(window.location.pathname)
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -78,6 +83,7 @@ $("#MPTlogin").on('submit', function(event){
         document.getElementById("loginMSG").innerHTML = "login successful"
 
         setCookie("token", response.user.token,1,url)
+        setCookie("name", response.user.msg.split(',')[0])
 
         location.assign(`${url}/home`)
     }).catch((err)=>{
@@ -87,15 +93,10 @@ $("#MPTlogin").on('submit', function(event){
 
 })
 
-$(window).on('load',function() {
+$(window).on('load',function(req,res) {
     if(path === `${url}/home`){
-
-        $("#HomeContent").hide().prop('disabled', true)
-        $("#HomeContent").children().prop('disabled', true)
-
         const token = getCookie('token');
-        const testtoken = '048AS940zhwT8l1xqLHYck6o2c6EzSrDU1XC88jLxg8HYk9CttQ0pcks6DjovMKU'
-
+        const name = getCookie('name');
         const request ={
             "url" :`${url2}/auth/verify_token`,
             "method":"POST",
@@ -105,46 +106,34 @@ $(window).on('load',function() {
         }
 
         $.ajax(request).done(function(response){
-            $("#loadingHome").hide().prop("disabled",true)
-            $("#HomeContent").show().prop('disabled', false)
-            $("#HomeContent").children().prop('disabled', false)
-
-                const code = req.query.code || null;
-                const state = req.query.state || null;
-                const storedState = req.cookies ? req.cookies[stateKey] : null;
-
-                if (state === null || state){
-                    
-                }
+            $("#customMsg").html( `Whats up ${name}`)
+            $("#loadingHome").hide()
+            $("#HomeContent").prop('hidden', false)
+            $("#HomeContent").children().prop('hidden', false)
 
         }).catch((err)=>{
             alert("Invalid Authentication")
             location.assign(`${url}`)
         })
     }
-})
 
-$("#getStarted").on("click", function(event){
-    event.preventDefault()
+    if(pathname === `/home/callback`){
+        const token = getCookie('token');
 
-    const token = getCookie('token');
+        console.log(req)
 
-    console.log(token)
+        // const code = req.query.code || null; //find how to get all these values from the query attached to the page
+        // const state = req.query.state || null;
+        // const storedState = req.cookies ? req.cookies[stateKey] : null;
 
-    var request = {
-        "url":`${url2}/spotify/login`,
-        "method": "GET",
-        "headers":{
-            "Authorization":`Bearer ${token}`
-        }
+            if (state === null || state!== storedState){
+                location.assign(`${url}/home`)
+            }else{
+                console.log("hello")
+                // console.log(req.query)
+            }
     }
-
-    $.ajax(request).done(function(req, response){
-        console.log(response)
-        console.log(req.query)
-    }).catch((err)=>{
-        alert("An error occured")
-    })
 })
+
 
 
