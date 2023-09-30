@@ -17,5 +17,11 @@ exports.home = (req, res) =>{
 }
 
 exports.callback = (req, res) =>{
-    res.render('callback')
+    const stateKey = 'spotify_auth_state';
+
+        const code = req.query.code || null; 
+        const state = req.query.state || null;
+        // const storedState = req.cookies ? req.cookies[stateKey] : null; // cant access the cookie now from here
+
+    res.render('callback', {S_reponse:{code, state}});
 }

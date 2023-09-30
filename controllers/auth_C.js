@@ -82,7 +82,7 @@ const verify_token = async (req, res)=>{ //my user token
 
 function createState(length){
     let state = ""
-    const values = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_!@#$%^&*()'
+    const values = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890()'
 
     for(let i =0; i < length; i++){
         state +=values.charAt(Math.floor(Math.random()*values.length))

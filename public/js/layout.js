@@ -93,7 +93,7 @@ $("#MPTlogin").on('submit', function(event){
 
 })
 
-$(window).on('load',function(req,res) {
+$(window).on('load',function() {
     if(path === `${url}/home`){
         const token = getCookie('token');
         const name = getCookie('name');
@@ -119,19 +119,11 @@ $(window).on('load',function(req,res) {
 
     if(pathname === `/home/callback`){
         const token = getCookie('token');
+        const sk = getCookie(stateKey);
 
-        console.log(req)
-
-        // const code = req.query.code || null; //find how to get all these values from the query attached to the page
-        // const state = req.query.state || null;
-        // const storedState = req.cookies ? req.cookies[stateKey] : null;
-
-            if (state === null || state!== storedState){
-                location.assign(`${url}/home`)
-            }else{
-                console.log("hello")
-                // console.log(req.query)
-            }
+        console.log(sk)
+        const pageState = $('#stateValue').text()
+        console.log(pageState)
     }
 })
 

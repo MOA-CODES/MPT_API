@@ -26,6 +26,7 @@ const morgan = require('morgan')
 const path = require('path')
 
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const app = express();
 
 const port = process.env.PORT||3001
@@ -52,6 +53,7 @@ app.use(function (req, res, next) {
   }); */
 
 app.use (bodyparser.urlencoded({extended: true}))
+// app.use(cookieParser())
 app.use(express.json())
 app.use(morgan('dev'))
 
