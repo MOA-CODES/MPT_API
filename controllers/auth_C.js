@@ -58,6 +58,26 @@ const getAuthorization_spotify = async (req, res) => {
     )
 }
 
+const getAccessToken_spotify = async(req, res) =>{
+    const client_id = process.env.CLIENT_ID
+    const client_secret = process.env.CLIENT_SECRET
+    const redirect_uri = process.env.redirect_uri
+    const code = req.body.code 
+    const grant_type = 'authorization_code'
+
+    res.redirect('https://accounts.spotify.com/api/token?'+
+    querystring.stringify({
+        code: code,
+        redirect_uri: redirect_uri,
+        grant_type: 'authorization_code',
+        headers:{
+            'Authorization': 'Basic '+ (new Buffer.fron(client_id + ':' + client_secret).toString('base64'))
+        }
+    })
+    )
+
+}
+
 const refresh_token_spotify = async (req, res) => {
 
 }
@@ -91,4 +111,4 @@ function createState(length){
     return state
 }
 
-module.exports = {register, verify_token, login, refresh_token_spotify, getAuthorization_spotify}
+module.exports = {register, verify_token, login, refresh_token_spotify, getAccessToken_spotify, getAuthorization_spotify}

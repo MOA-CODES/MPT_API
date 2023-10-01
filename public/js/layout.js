@@ -120,10 +120,22 @@ $(window).on('load',function() {
     if(pathname === `/home/callback`){
         const token = getCookie('token');
         const sk = getCookie(stateKey);
-
-        console.log(sk)
         const pageState = $('#stateValue').text()
-        console.log(pageState)
+
+        if(pageState  === null || !(pageState === sk)){
+            location.assign(`${url}/home`)
+        }else{
+            const request ={
+                "url" :`${url2}/spotify/access_token`,
+                "method":"GET",
+            }
+            $.ajax(request).done(function(response){
+                console.log(response)
+            }).catch((err)=>{
+                alert("hehehe XD")
+                console.log(err)
+            })
+        }
     }
 })
 
