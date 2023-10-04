@@ -125,16 +125,25 @@ $(window).on('load',function() {
         if(pageState  === null || !(pageState === sk)){
             location.assign(`${url}/home`)
         }else{
-            const request ={
-                "url" :`${url2}/spotify/access_token`,
-                "method":"GET",
-            }
-            $.ajax(request).done(function(response){
-                console.log(response)
-            }).catch((err)=>{
-                alert("hehehe XD")
-                console.log(err)
-            })
+                //get code from url query params
+           //getting code from url params is proving difficult so try from what we snent to the callback page itself next
+
+
+            // if(!code){
+            //     alert("Invalid Authentication")
+            //     location.assign(`${url}/home`)
+            // }
+
+            // const request ={
+            //     "url" :`${url2}/spotify/access_token?code=${code}`,
+            //     "method":"GET",
+            // }
+            // $.ajax(request).done(function(response){
+            //     console.log(response)
+            // }).catch((err)=>{
+            //     alert("hehehe XD")
+            //     console.log(err)
+            // })
         }
     }
 })

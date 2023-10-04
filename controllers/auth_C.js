@@ -62,19 +62,41 @@ const getAccessToken_spotify = async(req, res) =>{
     const client_id = process.env.CLIENT_ID
     const client_secret = process.env.CLIENT_SECRET
     const redirect_uri = process.env.redirect_uri
-    const code = req.body.code 
+    const code = req.params.code 
     const grant_type = 'authorization_code'
 
-    res.redirect('https://accounts.spotify.com/api/token?'+
-    querystring.stringify({
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code',
+    let authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form:{
+            code: code,
+            redirect_uri: redirect_uri,
+            grant_type: grant_type
+        },
         headers:{
-            'Authorization': 'Basic '+ (new Buffer.fron(client_id + ':' + client_secret).toString('base64'))
+            'Authorization': 'Basic ' + (new Buffer(client_id+ ':'+client_secret).toString('base64'))
+        },
+        json: true
+    }
+
+    request.post(authOptions, function(error, response, body){
+        if(!error && response.statusCode === 200){
+
+            const access_token = body.access_token, refresh_token = body.refresh_token;
+
+            let options = {
+                url: 'https://api.spotify.com/v1/me',
+                headers: {'Authorization': 'Bearer '+ access_token},
+                json: true
+            }
+
+            request.get(options, function(error, response, body){
+                console.log(body)
+            })
+
+            res.status(StatusCodes.OK).json({access_token,refresh_token})//test tomorrow
+
         }
     })
-    )
 
 }
 
