@@ -126,24 +126,25 @@ $(window).on('load',function() {
             location.assign(`${url}/home`)
         }else{
                 //get code from url query params
-           //getting code from url params is proving difficult so try from what we snent to the callback page itself next
+            const code = $("#codeValue").text()
 
+            if(!code || code === null || code === undefined){
+                console.log(code)
+                alert("Invalid Authentication")
+                console.log('go to home')
+                location.assign(`${url}/home`)
+            }
 
-            // if(!code){
-            //     alert("Invalid Authentication")
-            //     location.assign(`${url}/home`)
-            // }
-
-            // const request ={
-            //     "url" :`${url2}/spotify/access_token?code=${code}`,
-            //     "method":"GET",
-            // }
-            // $.ajax(request).done(function(response){
-            //     console.log(response)
-            // }).catch((err)=>{
-            //     alert("hehehe XD")
-            //     console.log(err)
-            // })
+            const request ={
+                "url" :`${url2}/spotify/access_token?code=${code}`,
+                "method":"GET",
+            }
+            $.ajax(request).done(function(response){
+                console.log(response)
+            }).catch((err)=>{
+                console.log('error occured using /spotify/access_token')
+                console.log(err)
+            })
         }
     }
 })

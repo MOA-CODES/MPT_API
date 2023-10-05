@@ -73,7 +73,7 @@ const getAccessToken_spotify = async(req, res) =>{
             grant_type: grant_type
         },
         headers:{
-            'Authorization': 'Basic ' + (new Buffer(client_id+ ':'+client_secret).toString('base64'))
+            'Authorization': 'Basic ' + (Buffer.alloc(client_id+ ':'+client_secret).toString('base64'))
         },
         json: true
     }
